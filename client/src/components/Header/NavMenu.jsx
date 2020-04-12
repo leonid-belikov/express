@@ -1,26 +1,9 @@
 import React from 'react';
-import {Link as RouterLink} from "react-router-dom";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
+import {NavLink} from "react-router-dom";
+import {Pane, Button} from "evergreen-ui";
 
+import './NavMenu.css';
 
-function ListItemLink(props) {
-  const { primary, to } = props;
-
-  const renderLink = React.useMemo(
-    () => React.forwardRef((itemProps, ref) => <RouterLink to={to} ref={ref} {...itemProps} />),
-    [to],
-  );
-
-  return (
-    <li>
-      <ListItem button component={renderLink}>
-        <ListItemText primary={primary} />
-      </ListItem>
-    </li>
-  );
-}
 
 const NavMenu = () => {
 
@@ -36,13 +19,20 @@ const NavMenu = () => {
     ];
 
     return (
-        <List>
-            {links.map((item) => (
-                <ListItemLink key={item.title}
-                              to={item.path}
-                              primary={item.title}/>
+        <Pane
+            minWidth={150}
+            paddingRight={24}>
+            {links.map(link => (
+                <Button key={link.title} width='100%' appearance='minimal' display='flex' paddingX={0}>
+                    <NavLink
+                        className='nav-menu__item'
+                        exact
+                        to={link.path}>
+                        {link.title}
+                    </NavLink>
+                </Button>
             ))}
-        </List>
+        </Pane>
     )
 };
 
