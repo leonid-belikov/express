@@ -21,10 +21,12 @@ async function start() {
         .catch(e => {
             console.log('Database connect error:', e)
         });
+
         app.listen(PORT, () => {
             console.log(`Server has been started on port ${PORT}...`)
         });
         app.use(bodyParser());
+
         app.use('/api/category', require('./routes/category.routes'));
     } catch(e) {
         console.log('Ошибка: ', e);
