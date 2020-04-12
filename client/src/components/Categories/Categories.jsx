@@ -1,12 +1,13 @@
 import React from 'react';
-import {Pane, Heading, TextInput, Button, Icon, Card, Text} from "evergreen-ui";
+import {Pane, Heading, TextInput, Button, Icon, Text, Spinner, toaster} from "evergreen-ui";
+import CategoryCard from "./CategoryCard";
 
 class Categories extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             name: '',
-            categories: []
+            loading: true,
         }
     }
 
@@ -26,7 +27,7 @@ class Categories extends React.Component {
                     categories = data.sort((a, b) => {
                         if (a.name > b.name) return 1;
                         if (a.name < b.name) return -1;
-                        if (a.name === b.name) return 0;
+                        return 0;
                     })
                 } else {
                     categories = data;
@@ -35,7 +36,8 @@ class Categories extends React.Component {
 
             this.setState(Object.assign({}, this.state, {
                 name: '',
-                categories
+                categories,
+                loading: false,
             }))
         } catch (e) {
             console.log('Упс, ошибка: ', e)
@@ -57,19 +59,18 @@ class Categories extends React.Component {
             if (data.message) {
                 console.log(data.message)
             } else {
-                console.log(`Категория ${data.name} добавлена`)
                 await this.updateData();
+                toaster.success(`Категория "${data.name}" добавлена`)
             }
         } catch (e) {
             console.log('Упс, ошибка: ', e)
         }
     }
 
-    async deleteCategory(event) {
+    async deleteCategory(id) {
         try {
-            const id = event.target.dataset.id ?? event.target.parentElement.dataset.id ?? event.target.parentElement.parentElement.dataset.id;
             const response = await fetch('/api/category/delete', {
-                method: 'POST',
+                method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -78,8 +79,31 @@ class Categories extends React.Component {
                 })
             });
             const data = await response.json();
-            console.log(`Категория ${data.name} удалена`)
             await this.updateData();
+            toaster.success(`Категория "${data.name}" удалена`)
+        } catch (e) {
+            console.log('Упс, ошибка: ', e)
+        }
+    }
+
+    async updateCategory(id, name) {
+        try {
+            const response = await fetch('api/category/update', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id, name
+                })
+            })
+            const data = await response.json();
+            this.setState(Object.assign({}, this.state, {
+                categories: this.state.categories.map(item => {
+                    if (item._id === data._id) return data;
+                    return item;
+                })
+            }))
         } catch (e) {
             console.log('Упс, ошибка: ', e)
         }
@@ -92,51 +116,48 @@ class Categories extends React.Component {
         }))
     }
 
-    render() {
-        let list = <>
-            <Heading size={400}>Категории отстутствуют</Heading>
-            <Text>
-                Чтобы добавить категорию, введите название и нажмите "+"
-            </Text>
-        </>;
-        if (this.state.categories.length > 0) {
+    getListArea() {
+        let list;
+        if (this.state.loading) return (
+            <Pane height={300}
+                display='flex'
+                justifyContent='center'
+                alignItems='center'>
+                <Spinner color='red'/>
+            </Pane>
+            );
+        if (this.state.categories?.length > 0) {
             const listItems = this.state.categories.map(item => {
                 return (
-                    <Card
-                        display='flex'
-                        justifyContent='center'
-                        alignItems='center'
-                        position='relative'
-                        width='15%'
-                        height={100}
-                        margin={10}
-                        marginLeft={0}
-                        elevation={2}
-                        key={item._id}>
-                        <Text >{item.name}</Text>
-                        <Button
-                            appearance='minimal'
-                            position='absolute'
-                            top={5}
-                            right={5}
-                            data-id={item._id}
-                            onClick={this.deleteCategory.bind(this)}>
-                            <Icon icon='trash' size={15}/>
-                        </Button>
-                    </Card>
+                    <CategoryCard
+                        key={item._id}
+                        item={item}
+                        updateHandler={this.updateCategory.bind(this)}
+                        deleteHandler={this.deleteCategory.bind(this)}
+                    />
                 )
             });
             list = <>
                 <Pane
                     display='flex'
                     flexWrap='wrap'
-                    justifyContent='flex-start'
-                    marginX='-10px'>
+                    justifyContent='flex-start'>
                     {listItems}
                 </Pane>
             </>
+        } else {
+            list = <>
+                <Heading size={400}>Категории отстутствуют</Heading>
+                <Text>
+                    Чтобы добавить категорию, введите название и нажмите "+"
+                </Text>
+            </>;
         }
+        return list;
+    }
 
+    render() {
+        const listArea = this.getListArea();
 
         return (
             <Pane>
@@ -151,7 +172,7 @@ class Categories extends React.Component {
                 <Button onClick={this.addCategory.bind(this)}>
                     <Icon icon='plus'/>
                 </Button>
-                {list}
+                {listArea}
             </Pane>
         );
     }

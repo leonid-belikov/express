@@ -30,7 +30,7 @@ router.post('/add', async (req, res) => {
     }
 });
 
-router.post('/delete', async (req, res) => {
+router.delete('/delete', async (req, res) => {
     try {
         const id = req.body.id;
         const deletedCategory = await Category.findOneAndDelete({ _id: id });
@@ -40,8 +40,16 @@ router.post('/delete', async (req, res) => {
     }
 });
 
-router.post('/edit', async (req, res) => {
-
+router.put('/update', async (req, res) => {
+    try {
+        const id = req.body.id;
+        const name = req.body.name;
+        await Category.findOneAndUpdate({_id: id}, {name});
+        const updatedCategory = await Category.findOne({ _id: id });
+            res.send(updatedCategory);
+    } catch (e) {
+        res.status(500).json({message: 'Что-то пошло не так...'})
+    }
 });
 
 module.exports = router;
