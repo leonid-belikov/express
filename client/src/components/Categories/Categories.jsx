@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-    Button,
-    TextField,
-    List,
-    ListItem,
-    ListItemText,
-    Typography
-} from '@material-ui/core'
-import Grid from "@material-ui/core/Grid";
+import {Pane, Heading, TextInput, Button, Icon, Card, Text} from "evergreen-ui";
 
 class Categories extends React.Component {
     constructor(props) {
@@ -30,8 +22,17 @@ class Categories extends React.Component {
             const data = await response.json();
             let categories = [];
             if (data !== {}) {
-                categories = data;
+                if (data.length) {
+                    categories = data.sort((a, b) => {
+                        if (a.name > b.name) return 1;
+                        if (a.name < b.name) return -1;
+                        if (a.name === b.name) return 0;
+                    })
+                } else {
+                    categories = data;
+                }
             }
+
             this.setState(Object.assign({}, this.state, {
                 name: '',
                 categories
@@ -93,63 +94,65 @@ class Categories extends React.Component {
 
     render() {
         let list = <>
-            <Grid item xs={12}>
-                <Typography variant="h6">Категории отстутствуют</Typography>
-            </Grid>
-            <Grid item xs={12}>
-                <Typography variant="body1">
-                    Чтобы добавить категорию, введите название и нажмите "Добавить категорию"
-                </Typography>
-            </Grid>
+            <Heading size={400}>Категории отстутствуют</Heading>
+            <Text>
+                Чтобы добавить категорию, введите название и нажмите "+"
+            </Text>
         </>;
         if (this.state.categories.length > 0) {
             const listItems = this.state.categories.map(item => {
                 return (
-                    <ListItem className="item" key={item._id}>
-                        <ListItemText>{item.name}</ListItemText>
+                    <Card
+                        display='flex'
+                        justifyContent='center'
+                        alignItems='center'
+                        position='relative'
+                        width='15%'
+                        height={100}
+                        margin={10}
+                        marginLeft={0}
+                        elevation={2}
+                        key={item._id}>
+                        <Text >{item.name}</Text>
                         <Button
-                            variant="contained"
-                            color="secondary"
+                            appearance='minimal'
+                            position='absolute'
+                            top={5}
+                            right={5}
                             data-id={item._id}
                             onClick={this.deleteCategory.bind(this)}>
-                            <i className={"fa fa-trash fa-lg"}/>
+                            <Icon icon='trash' size={15}/>
                         </Button>
-                    </ListItem>
+                    </Card>
                 )
             });
             list = <>
-                <Grid item xs={12}>
-                    <Typography variant="h6">Имеются категории:</Typography>
-                </Grid>
-                <List>
+                <Pane
+                    display='flex'
+                    flexWrap='wrap'
+                    justifyContent='flex-start'
+                    marginX='-10px'>
                     {listItems}
-                </List>
+                </Pane>
             </>
         }
 
+
         return (
-            <Grid container>
-                <Grid item xs={12}>
-                    <Typography variant="h4">Категории</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                    <TextField
-                        id="outlined-basic"
-                        type="text"
-                        color={"secondary"}
-                        label="Новая категория"
-                        variant="outlined"
-                        size="small"
-                        name="name"
-                        value={this.state.name}
-                        onChange={this.onChangeHandler.bind(this)}
-                    />
-                    <Button variant="contained" color="secondary" onClick={this.addCategory.bind(this)}>
-                        <i className={"fa fa-plus fa-lg"}/>
-                    </Button>
-                </Grid>
+            <Pane>
+                <Heading size={900} marginBottom={30}>Категории</Heading>
+                <TextInput
+                    marginBottom={30}
+                    marginRight={15}
+                    placeholder="Добавить категорию"
+                    value={this.state.name}
+                    onChange={this.onChangeHandler.bind(this)}
+                />
+                <Button onClick={this.addCategory.bind(this)}>
+                    <Icon icon='plus'/>
+                </Button>
                 {list}
-            </Grid>
+            </Pane>
         );
     }
 }
