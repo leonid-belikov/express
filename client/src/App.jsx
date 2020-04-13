@@ -14,14 +14,14 @@ const App = () => {
     <Pane
       display='flex'
       minHeight='100vh'
-      padding={24}>
+      padding={25}>
       <BrowserRouter>
         <NavMenu/>
         <Pane
           width={'100%'}
           elevation={4}
           backgroundColor="white"
-          padding={24}>
+          padding={25}>
           <Switch>
             <Route exact path="/" component={MainPage}/>
             <Route path="/categories" component={Categories}/>
