@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Card, Text, TextInput, Dialog} from "evergreen-ui";
+import {Pane, Card, Text, TextInput, Dialog} from "evergreen-ui";
 import CardToolbarBtn from "./CardToolbarBtn";
 
 
@@ -139,9 +139,18 @@ class CategoryCard extends Component {
                 cancelLabel='Отмена'
                 onConfirm={this.confirmHandler.bind(this)}
                 onCloseComplete={() => {
-                    this.setState(Object.assign({}, this.state, { showDialog: false }))
+                    this.setState(Object.assign({}, this.state, {showDialog: false}))
                 }}>
-                {`Удалить категорию "${this.state.name}"?`}
+                    <Pane
+                        className='dialog-pane'
+                        display='flex'
+                        justifyContent='center'
+                        alignItems='center'
+                        marginTop={20}>
+                        <Text>
+                            {`Удалить категорию "${this.state.name}"?`}
+                        </Text>
+                    </Pane>
             </Dialog>
         </>
         );
