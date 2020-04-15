@@ -44,9 +44,10 @@ router.put('/update', async (req, res) => {
     try {
         const id = req.body.id;
         const name = req.body.name;
-        await Category.findOneAndUpdate({_id: id}, {name});
-        const updatedCategory = await Category.findOne({ _id: id });
-            res.send(updatedCategory);
+        const updatedCategory = await Category.findOneAndUpdate({_id: id}, {$set:{'name':name}}, {
+            returnOriginal: false
+        });
+        res.send(updatedCategory);
     } catch (e) {
         res.status(500).json({message: 'Что-то пошло не так...'})
     }
