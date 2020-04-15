@@ -1,4 +1,5 @@
 {
   "port": 5000,
+  "jwtSecret": "Tomatoes Must Tomato",
   "mongoUri": "mongodb+srv://leonid:leonid@cluster0-3cp82.mongodb.net/test"
 }
