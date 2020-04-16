@@ -3,9 +3,6 @@ import {Button, Icon} from "evergreen-ui";
 
 
 class CardToolbarBtn extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         return (
