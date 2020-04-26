@@ -5,6 +5,14 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
+// app.use(bodyParser.raw());
+// app.use(bodyParser.text());
+
+app.use('/api/auth', require('./routes/auth.routes'))
+app.use('/api/category', require('./routes/category.routes'));
+
 const PORT = process.env.port || config.get('port');
 
 async function start() {
@@ -20,14 +28,12 @@ async function start() {
         })
         .catch(e => {
             console.log('Database connect error:', e)
+            throw (e);
         });
 
         app.listen(PORT, () => {
             console.log(`Server has been started on port ${PORT}...`)
         });
-        app.use(bodyParser());
-
-        app.use('/api/category', require('./routes/category.routes'));
     } catch(e) {
         console.log('Ошибка: ', e);
         process.exit(1)
