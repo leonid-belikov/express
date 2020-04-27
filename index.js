@@ -10,8 +10,10 @@ app.use(bodyParser.urlencoded());
 // app.use(bodyParser.raw());
 // app.use(bodyParser.text());
 
-app.use('/api/auth', require('./routes/auth.routes'))
+app.use('/api/auth', require('./routes/auth.routes'));
 app.use('/api/category', require('./routes/category.routes'));
+app.use('/api/group', require('./routes/group.routes'));
+app.use('/api/user', require('./routes/user.routes'));
 
 const PORT = process.env.port || config.get('port');
 

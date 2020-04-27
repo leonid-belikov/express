@@ -6,9 +6,10 @@ import "./index.css"
 import {Pane} from "evergreen-ui"
 
 import MainPage from "./components/MainPage/MainPage";
-import Categories from './components/Categories/Categories';
-import NavMenu from "./components/Header/NavMenu";
+import NavMenu from "./components/NavMenu/NavMenu";
 import AuthPage from "./components/AuthPage/AuthPage";
+import GroupsPage from "./components/GroupsPage/GroupsPage";
+import CategoriesPage from './components/CategoriesPage/CategoriesPage';
 
 
 class App extends Component {
@@ -32,7 +33,8 @@ class App extends Component {
                         padding={25}>
                         <Switch>
                             <Route exact path="/" component={MainPage}/>
-                            <Route path="/categories" component={Categories}/>
+                            <Route path="/categories" component={CategoriesPage}/>
+                            <Route path="/groups" component={GroupsPage}/>
                         </Switch>
                     </Pane>
                 </Pane>}

@@ -1,0 +1,15 @@
+.no-resize {
+  resize: none;
+}
+
+.add-dialog__tab-list span:first-child {
+  margin-left: 0;
+}
+
+.add-dialog__tab-list span:last-child {
+  margin-right: 0;
+}
+
+.groups-page__arrow {
+  position: absolute;
+}

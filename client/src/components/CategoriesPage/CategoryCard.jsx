@@ -99,16 +99,12 @@ class CategoryCard extends Component {
         })
 
         if (mode === 'view') {
-            content = <>
-                <Text>{this.props.item.name}</Text>
-            </>
+            content = <Text>{this.props.item.name}</Text>
         } else if (mode === 'edit') {
-            content = <>
-                <TextInput
+            content = <TextInput
+                    fontSize={14}
                     value={this.state.name}
-                    onChange={this.changeHandler.bind(this)}
-                />
-            </>
+                    onChange={this.changeHandler.bind(this)}/>
         }
 
         return (<>
@@ -129,6 +125,7 @@ class CategoryCard extends Component {
                 {content}
                 {toolbar}
             </Card>
+
             <Dialog
                 intent="danger"
                 isShown={this.state.showDialog}

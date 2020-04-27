@@ -38,13 +38,7 @@ router.post('/register',
             }
 
             const {name, email, password} = req.body;
-
-            console.log(name, email, password);
-
             const candidate = await User.findOne({name})
-
-            console.log(candidate) // null
-
             if (candidate) {
                 return res.status(422).json({
                     message: `Имя пользователя "${name}" уже занято`,
@@ -59,14 +53,13 @@ router.post('/register',
                 console.log('bcrypt error:', e)
             }
 
-            console.log(hashedPassword)
-
             const user = new User({name, email, password: hashedPassword});
 
             await user.save();
 
+            // TODO: сделать авторизацию по двум токенам
             const token = jwt.sign(
-                {userId: user.id},
+                {userId: user._id},
                 config.get('jwtSecret'),
                 {expiresIn: '1h'}
             )
@@ -104,7 +97,6 @@ router.post('/login',
             }
 
             const {name, password} = req.body;
-            console.log(name, password);
             const user = await User.findOne({name})
 
             if (!user) {
@@ -117,8 +109,9 @@ router.post('/login',
                 return res.status(400).json({message: 'Неверное сочетание имя/пароль'})
             }
 
+            // TODO: сделать авторизацию по двум токенам
             const token = jwt.sign(
-                {userId: user.id},
+                {userId: user._id},
                 config.get('jwtSecret'),
                 {expiresIn: '1h'}
             )
@@ -135,5 +128,6 @@ router.post('/login',
             res.status(500).json({message: 'Что-то пошло не так...'})
         }
     })
+
 
 module.exports = router;
