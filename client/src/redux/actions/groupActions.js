@@ -72,7 +72,7 @@ export function getGroups() {
     return async dispatch => {
         try {
             const responseData = await getGroupsAPI();
-            const groups = responseData.data.groups;
+            const groups = responseData.data.groups ?? [];
             dispatch({
                 type: UPDATE_GROUPS,
                 groups
