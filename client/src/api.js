@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-window.axios = axios.create({
+const wrapHttp = () => axios.create({
     headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token'),
         'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ window.axios = axios.create({
 
 export async function registerAPI(data) {
     try {
-        const response = await axios.post('api/auth/register', data);
+        const response = await wrapHttp().post('api/auth/register', data);
         return response.data;
     } catch (e) {
         if (e.response.status === 422) {
@@ -44,7 +44,7 @@ export async function registerAPI(data) {
 
 export async function loginAPI(data) {
     try {
-        const response = await axios.post('api/auth/login', data);
+        const response = await wrapHttp().post('api/auth/login', data);
         return response.data;
     } catch (e) {
         if (e.response.status === 400) {
@@ -59,7 +59,6 @@ export async function loginAPI(data) {
                     errors,
                     message: e.response.data.message,
                 };
-
             }
             return {
                 status: 'failed',
@@ -71,4 +70,45 @@ export async function loginAPI(data) {
     }
 }
 
+export async function findUserAPI(name) {
+    try {
+        const response = await wrapHttp().post('api/user/show', {name})
+        const user = response.data.user;
+        return {
+            status: 'success',
+            message: `Пользователь ${user.name} получит приглашение в группу после ее создания`,
+            user,
+        }
+    } catch (e) {
+        if (e.response.status === 422) {
+            return e.response.data;
+        } else {
+            throw (e);
+        }
+    }
+}
 
+export async function getGroupsAPI() {
+    try {
+        const responseData = await wrapHttp().get('/api/group/show');
+        return responseData;
+    } catch (e) {
+        console.error('Ошибка при отображении списка групп:', e)
+    }
+}
+
+export async function createGroup(data) {
+    const formattedUsers = data.invited.map(user => user.id);
+    const formattedAccounts = data.accounts.map(name => ({name}));
+    const formattedData = {
+        ...data,
+        invited: formattedUsers,
+        accounts: formattedAccounts,
+    }
+    try {
+        const responseData = await wrapHttp().post('/api/group/add', formattedData);
+        console.log(responseData);
+    } catch (e) {
+        console.error('Ошибка при создании группы:', e)
+    }
+}

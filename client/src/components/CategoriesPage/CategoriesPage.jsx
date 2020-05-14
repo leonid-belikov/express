@@ -1,8 +1,8 @@
-import React from 'react';
-import {Pane, Heading, TextInput, Button, Icon, Text, Spinner, toaster} from "evergreen-ui";
+import React, {Component} from 'react';
+import {Pane, Heading, TextInput, IconButton, Text, Spinner, toaster} from "evergreen-ui";
 import CategoryCard from "./CategoryCard";
 
-class Categories extends React.Component {
+class CategoriesPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -120,12 +120,12 @@ class Categories extends React.Component {
         let list;
         if (this.state.loading) return (
             <Pane height={300}
-                display='flex'
-                justifyContent='center'
-                alignItems='center'>
+                  display='flex'
+                  justifyContent='center'
+                  alignItems='center'>
                 <Spinner color='red'/>
             </Pane>
-            );
+        );
         if (this.state.categories?.length > 0) {
             const listItems = this.state.categories.map(item => {
                 return (
@@ -162,20 +162,22 @@ class Categories extends React.Component {
         return (
             <Pane>
                 <Heading size={900} marginBottom={30}>Категории</Heading>
-                <TextInput
-                    marginBottom={30}
-                    marginRight={15}
-                    placeholder="Добавить категорию"
-                    value={this.state.name}
-                    onChange={this.onChangeHandler.bind(this)}
-                />
-                <Button onClick={this.addCategory.bind(this)}>
-                    <Icon icon='plus'/>
-                </Button>
+                <Pane
+                    display='flex'>
+                    <TextInput
+                        marginBottom={30}
+                        marginRight={15}
+                        fontSize={14}
+                        placeholder="Добавить категорию"
+                        value={this.state.name}
+                        onChange={this.onChangeHandler.bind(this)}
+                    />
+                    <IconButton icon='plus' onClick={this.addCategory.bind(this)}/>
+                </Pane>
                 {listArea}
             </Pane>
         );
     }
 }
 
-export default Categories;
+export default CategoriesPage;

@@ -4,14 +4,17 @@ import {Provider} from 'react-redux';
 import {applyMiddleware, combineReducers, createStore} from "redux";
 import {logger} from "redux-logger";
 import thunk from "redux-thunk";
+
 import userReducer from "./redux/reducers/userReducer";
+import groupReducer from "./redux/reducers/groupReducer";
 
 import App from './App';
 // import * as serviceWorker from './serviceWorker';
 
 
 const reducer = combineReducers({
-    userData: userReducer
+    userData: userReducer,
+    groupData: groupReducer,
 })
 
 const store = createStore(reducer, applyMiddleware(logger, thunk));

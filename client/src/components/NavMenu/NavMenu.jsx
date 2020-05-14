@@ -18,6 +18,10 @@ class NavMenu extends Component {
                     path: '/'
                 },
                 {
+                    title: 'Группы',
+                    path: '/groups'
+                },
+                {
                     title: 'Категории',
                     path: '/categories'
                 },

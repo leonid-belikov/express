@@ -19,7 +19,7 @@ const authErrors = {
     name: [],
     password: [],
 }
-const initialUserState = {
+const initialState = {
     authUser,
     user,
     registerErrors,
@@ -27,7 +27,7 @@ const initialUserState = {
     authFailed: false,
 }
 
-export default function userReducer(state = initialUserState, action) {
+export default function userReducer(state = initialState, action) {
     switch (action.type) {
 
         case LOGIN:

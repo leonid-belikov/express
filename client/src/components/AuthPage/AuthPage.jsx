@@ -131,6 +131,7 @@ class AuthPage extends Component {
                             name='name'
                             isInvalid={!!this.props.registerErrors.name.length}
                             width={240}
+                            fontSize={14}
                             placeholder='Имя пользователя'
                             value={this.state.registerFormData.name}
                             onChange={this.handleRegisterInputChange.bind(this)}/>
@@ -139,6 +140,7 @@ class AuthPage extends Component {
                         name='email'
                         isInvalid={!!this.props.registerErrors.email.length}
                         width={240}
+                        fontSize={14}
                         placeholder='Адрес электронной почты'
                         value={this.state.registerFormData.email}
                         onChange={this.handleRegisterInputChange.bind(this)}/>
@@ -161,6 +163,7 @@ class AuthPage extends Component {
                             type='password'
                             isInvalid={!!this.props.registerErrors.password.length}
                             width={240}
+                            fontSize={14}
                             placeholder='Пароль'
                             value={this.state.registerFormData.password}
                             onChange={this.handleRegisterInputChange.bind(this)}/>
@@ -170,6 +173,7 @@ class AuthPage extends Component {
                         type='password'
                         isInvalid={!!this.props.registerErrors.confirm.length}
                         width={240}
+                        fontSize={14}
                         placeholder='Повторите пароль'
                         value={this.state.registerFormData.confirm}
                         onChange={this.handleRegisterInputChange.bind(this)}/>
@@ -234,8 +238,9 @@ class AuthPage extends Component {
                     justifyContent='space-between'
                     flexWrap='wrap'>
                     <TextInput
-                        width={240}
                         name='name'
+                        width={240}
+                        fontSize={14}
                         placeholder='Имя пользователя'
                         value={this.state.authFormData.name}
                         isInvalid={!!this.props.authErrors.name.length}
@@ -245,6 +250,7 @@ class AuthPage extends Component {
                         type='password'
                         name='password'
                         width={240}
+                        fontSize={14}
                         placeholder='Пароль'
                         value={this.state.authFormData.password}
                         isInvalid={!!this.props.authErrors.password.length}
@@ -310,7 +316,6 @@ class AuthPage extends Component {
             </Pane>
         )
     }
-
 }
 
 export default connect(
