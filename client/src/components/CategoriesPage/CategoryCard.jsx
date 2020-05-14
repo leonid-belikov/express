@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Card, Text, TextInput, Dialog} from "evergreen-ui";
+import {Pane, Card, Text, TextInput, Dialog} from "evergreen-ui";
 import CardToolbarBtn from "./CardToolbarBtn";
 
 
@@ -99,16 +99,12 @@ class CategoryCard extends Component {
         })
 
         if (mode === 'view') {
-            content = <>
-                <Text>{this.props.item.name}</Text>
-            </>
+            content = <Text>{this.props.item.name}</Text>
         } else if (mode === 'edit') {
-            content = <>
-                <TextInput
+            content = <TextInput
+                    fontSize={14}
                     value={this.state.name}
-                    onChange={this.changeHandler.bind(this)}
-                />
-            </>
+                    onChange={this.changeHandler.bind(this)}/>
         }
 
         return (<>
@@ -129,6 +125,7 @@ class CategoryCard extends Component {
                 {content}
                 {toolbar}
             </Card>
+
             <Dialog
                 intent="danger"
                 isShown={this.state.showDialog}
@@ -139,9 +136,18 @@ class CategoryCard extends Component {
                 cancelLabel='Отмена'
                 onConfirm={this.confirmHandler.bind(this)}
                 onCloseComplete={() => {
-                    this.setState(Object.assign({}, this.state, { showDialog: false }))
+                    this.setState(Object.assign({}, this.state, {showDialog: false}))
                 }}>
-                {`Удалить категорию "${this.state.name}"?`}
+                    <Pane
+                        className='dialog-pane'
+                        display='flex'
+                        justifyContent='center'
+                        alignItems='center'
+                        marginTop={20}>
+                        <Text>
+                            {`Удалить категорию "${this.state.name}"?`}
+                        </Text>
+                    </Pane>
             </Dialog>
         </>
         );

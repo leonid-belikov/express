@@ -5,7 +5,6 @@ const MainPage = () => {
     return (
         <Pane>
             <Heading
-
                 size={900}>
                 Главная страница
             </Heading>
