@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Pane, Heading, Button,Paragraph, Spinner} from "evergreen-ui";
-import ReactRough, {Curve} from 'react-rough'
 import {clearNewGroupData, getGroups} from "../../redux/actions/groupActions";
 
 import './GroupsPage.css'
