@@ -1,4 +1,14 @@
-import {defaultTheme} from "evergreen-ui";
+import {defaultTheme, toaster} from "evergreen-ui";
+
+
+export function checkAuthFailed(e) {
+    if (e.response.status === 401) {
+        toaster.danger('Ошибка авторизации')
+        console.log('Ошибка авторизации: ', e)
+        return true
+    }
+    return false
+}
 
 export function getRandomBackgroundColor() {
     const colors = [

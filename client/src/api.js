@@ -1,13 +1,14 @@
 import axios from 'axios';
 
-const wrapHttp = () => axios.create({
-    headers: {
-        'Authorization': 'Bearer ' + localStorage.getItem('token'),
-        'Content-Type': 'application/json',
-    }
-})
+const wrapHttp = () => {
+    const _axios = axios.create({
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'Content-Type': 'application/json',
+        }
+    })
 
-// axios.interceptors.request.use(
+// _axios.interceptors.request.use(
 //     (config) => {
 //         if (config.method === 'put' && config.data) {
 //             config.data.append('_method', 'PUT');
@@ -19,15 +20,21 @@ const wrapHttp = () => axios.create({
 //         return Promise.reject(error);
 //     }
 // );
-//
-// axios.interceptors.response.use(function (response) {
-//     return response;
-// }, function (error) {
-//     if (error.response && error.response.status === 401) {
-//         localStorage.removeItem('user')
-//     }
-//     return Promise.reject(error);
-// });
+
+//     _axios.interceptors.response.use(function (response) {
+//         return response;
+//     }, function (error) {
+//         debugger
+//         if (error.response && error.response.status === 401) {
+//             localStorage.removeItem('user');
+//             localStorage.removeItem('token');
+//         }
+//         return Promise.reject(error);
+//     });
+
+    return _axios;
+}
+
 
 export async function registerAPI(data) {
     try {
@@ -93,7 +100,8 @@ export async function getGroupsAPI() {
         const responseData = await wrapHttp().get('/api/group/show');
         return responseData;
     } catch (e) {
-        console.error('Ошибка при отображении списка групп:', e)
+        console.log('Ошибка при отображении списка групп:', e)
+        throw (e)
     }
 }
 
@@ -109,6 +117,6 @@ export async function createGroup(data) {
         const responseData = await wrapHttp().post('/api/group/add', formattedData);
         console.log(responseData);
     } catch (e) {
-        console.error('Ошибка при создании группы:', e)
+        console.log('Ошибка при создании группы:', e)
     }
 }
