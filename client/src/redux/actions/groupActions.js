@@ -5,9 +5,11 @@ import {
     CLEAR_NEW_GROUP_DATA,
     REMOVE_USER_FROM_NEW_GROUP,
     UPDATE_GROUPS,
-    UPDATE_NEW_GROUP_DATA
+    UPDATE_NEW_GROUP_DATA,
+    LOGOUT,
 } from "../types";
 import {findUserAPI, getGroupsAPI} from "../../api";
+import {checkAuthFailed} from "../../utils/helpers";
 
 
 export function changeNewGroupAccounts(accounts) {
@@ -78,6 +80,10 @@ export function getGroups() {
                 groups
             })
         } catch (e) {
+            const logout = checkAuthFailed(e)
+            if (logout) {
+                dispatch({type: LOGOUT})
+            }
             console.log('Ошибка при поиске: ', e)
         }
     }
