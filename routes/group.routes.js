@@ -1,27 +1,8 @@
 const {Router} = require('express');
 const Group = require('../models/Group');
-const User = require('../models/User');
 const auth = require('../middleware/auth.middleware')
 const router = new Router();
 
-
-// const addUserNames = async groups => {
-//     for (const group of groups) {
-//         for (const user of group.users) {
-//             const userData = await User.findById(user.id)
-//             user.aggregate([
-//                 {
-//                     $addFields: {
-//                         "name": userData.name
-//                     }
-//                 }
-//             ])
-//             // user.name = userData.name
-//             console.log(typeof user)
-//         }
-//     }
-//     return groups;
-// }
 
 router.get('/show', auth, async (req, res) => {
     try {
@@ -58,6 +39,21 @@ router.post('/add', auth, async (req, res) => {
         res.status(500).json({message: 'Что-то пошло не так...'})
     }
 });
+
+router.get('/invitations', auth, async (req, res) => {
+    try {
+        const userId = req.userId;
+        const invitations = await Group.find({
+            invited: { $elemMatch: { $eq: userId } }
+        })
+            .populate('users', 'name')
+        if (!invitations.length) return res.json({message: 'Группы не найдены'})
+        return res.json({invitations})
+    } catch (e) {
+        console.log(e)
+        res.status(500).json({message: 'Что-то пошло не так...'})
+    }
+})
 
 
 module.exports = router;

@@ -120,3 +120,14 @@ export async function createGroup(data) {
         console.log('Ошибка при создании группы:', e)
     }
 }
+
+export async function getInvitationsAPI() {
+    try {
+        const responseData = await wrapHttp().get('/api/group/invitations');
+        return responseData;
+    } catch (e) {
+        console.log('Ошибка при отображении списка приглашений:', e)
+        throw (e)
+    }
+}
+

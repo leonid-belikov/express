@@ -7,23 +7,26 @@ class GroupCard extends Component {
     render() {
 
         const data = this.props.data;
+        const cardBorderRadius = 10;
 
         return <Card
             key={data._id}
             elevation={3}
             width={350}
+            borderRadius={cardBorderRadius}
             marginRight={25}
-            marginBottom={25}>
+            marginTop={25}>
             <Pane
                 position='relative'
                 paddingTop={24}
                 paddingBottom={16}
                 paddingX={25}
-                background={defaultTheme.palette.blue.light}
-                borderTopRightRadius={5}
-                borderTopLeftRadius={5}>
+                background={defaultTheme.palette.neutral.dark}
+                borderTopRightRadius={cardBorderRadius}
+                borderTopLeftRadius={cardBorderRadius}>
                 <Heading
                     size={600}
+                    color='white'
                     marginBottom={10}>
                     {data.name}
                 </Heading>
@@ -31,24 +34,34 @@ class GroupCard extends Component {
                     size={400}
                     marginBottom={10}
                     overflow='hidden'
-                    color='muted'
+                    color={defaultTheme.scales.neutral.N6}
                     textOverflow='ellipsis'>
                     {data.description}
                 </Paragraph>
                 <Pane
                     position='absolute'
                     bottom={-8}
-                    left={25}>
+                    left={0}>
                     <ReactRough
-                        width={300}
-                        height={10}>
+                        width={350}
+                        height={20}>
                         <Line
                             x1={0}
-                            x2={300}
-                            y1={5}
-                            y2={5}
-                            stroke={defaultTheme.palette.blue.base}
-                            roughness={1.7}
+                            x2={350}
+                            y1={15}
+                            y2={15}
+                            stroke='white'
+                            // stroke={defaultTheme.palette.blue.dark}
+                            roughness={3}
+                        />
+                        <Line
+                            x1={0}
+                            x2={350}
+                            y1={10}
+                            y2={10}
+                            stroke='white'
+                            // stroke={defaultTheme.palette.blue.dark}
+                            roughness={3}
                         />
                     </ReactRough>
                 </Pane>
@@ -84,6 +97,7 @@ class GroupCard extends Component {
                                 isSolid
                                 key={user._id}
                                 name={user.name}
+                                size={40}
                             />
                         })}
                     </Pane>
@@ -108,6 +122,7 @@ class GroupCard extends Component {
                                 marginRight={6}
                                 key={user._id}
                                 name={user.name}
+                                size={40}
                             />
                         })}
                     </Pane>}
