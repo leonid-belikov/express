@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Pane, Heading, Button,Paragraph, Spinner} from "evergreen-ui";
-import {clearNewGroupData, getGroups, getInvitations} from "../../redux/actions/groupActions";
+import {respondInvitation, clearNewGroupData, getGroups, getInvitations} from "../../redux/actions/groupActions";
 
 import './GroupsPage.css'
 
@@ -80,7 +80,12 @@ class GroupsPage extends Component {
 
     getInvitationList() {
         if (!this.props.invitations) return [];
-        return this.props.invitations.map(item => <InvitationCard key={item._id} data={item}/>);
+        return this.props.invitations.map(item => <InvitationCard
+            key={item._id}
+            data={item}
+            acceptHandler={this.props.acceptInvitation.bind(this, item._id)}
+            declineHandler={this.props.declineInvitation.bind(this, item._id)}
+        />);
     }
 
     getContentGroups() {
@@ -155,7 +160,7 @@ class GroupsPage extends Component {
                     display='flex'
                     flexWrap='wrap'
                     marginTop={20}
-                    marginBottom={32}
+                    marginBottom={82}
                     paddingTop={10}>
                     {this.getContentGroups()}
                 </Pane>}
@@ -206,6 +211,8 @@ export default connect(
     dispatch => ({
         clearForm: () => dispatch(clearNewGroupData()),
         getGroups: () => dispatch(getGroups()),
-        getInvitations: () => dispatch(getInvitations())
+        getInvitations: () => dispatch(getInvitations()),
+        acceptInvitation: (groupId) => dispatch(respondInvitation(groupId, true)),
+        declineInvitation: (groupId) => dispatch(respondInvitation(groupId, false)),
     })
 )(GroupsPage);

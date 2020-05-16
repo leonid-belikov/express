@@ -131,3 +131,12 @@ export async function getInvitationsAPI() {
     }
 }
 
+export async function respondInvitationAPI(groupId, accepted) {
+    try {
+        const responseData = await wrapHttp().post('/api/group/invitations', {groupId, accepted})
+        return responseData
+    }catch (e) {
+        console.log('Ошибка при подтверждении приглашения:', e)
+        throw (e)
+    }
+}
