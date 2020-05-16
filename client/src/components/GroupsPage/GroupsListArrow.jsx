@@ -9,7 +9,7 @@ const roughnessMain = 1
 const bowing = 1
 const seed = 5
 
-const GroupsPageArrow = () => <Pane
+const GroupsListArrow = () => <Pane
     position='absolute'
     top={-20}
     left={90}>
@@ -50,4 +50,4 @@ const GroupsPageArrow = () => <Pane
     </ReactRough>
 </Pane>
 
-export default GroupsPageArrow;
+export default GroupsListArrow;

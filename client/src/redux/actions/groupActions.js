@@ -6,9 +6,9 @@ import {
     REMOVE_USER_FROM_NEW_GROUP,
     UPDATE_GROUPS,
     UPDATE_NEW_GROUP_DATA,
-    LOGOUT,
+    LOGOUT, UPDATE_INVITATIONS,
 } from "../types";
-import {findUserAPI, getGroupsAPI} from "../../api";
+import {findUserAPI, getGroupsAPI, getInvitationsAPI} from "../../api";
 import {checkAuthFailed} from "../../utils/helpers";
 
 
@@ -78,6 +78,25 @@ export function getGroups() {
             dispatch({
                 type: UPDATE_GROUPS,
                 groups
+            })
+        } catch (e) {
+            const logout = checkAuthFailed(e)
+            if (logout) {
+                dispatch({type: LOGOUT})
+            }
+            console.log('Ошибка при поиске: ', e)
+        }
+    }
+}
+
+export function getInvitations() {
+    return async dispatch => {
+        try {
+            const responseData = await getInvitationsAPI();
+            const invitations = responseData.data.invitations ?? [];
+            dispatch({
+                type: UPDATE_INVITATIONS,
+                invitations
             })
         } catch (e) {
             const logout = checkAuthFailed(e)
