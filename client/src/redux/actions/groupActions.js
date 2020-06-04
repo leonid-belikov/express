@@ -1,14 +1,14 @@
 import {toaster} from "evergreen-ui";
-
 import {
     ADD_USER_TO_NEW_GROUP,
     CLEAR_NEW_GROUP_DATA,
     REMOVE_USER_FROM_NEW_GROUP,
     UPDATE_GROUPS,
     UPDATE_NEW_GROUP_DATA,
-    LOGOUT, UPDATE_INVITATIONS,
+    LOGOUT,
+    UPDATE_INVITATIONS,
 } from "../types";
-import {findUserAPI, getGroupsAPI, getInvitationsAPI} from "../../api";
+import {findUserAPI, getGroupsAPI, getInvitationsAPI, respondInvitationAPI} from "../../api";
 import {checkAuthFailed} from "../../utils/helpers";
 
 
@@ -104,6 +104,31 @@ export function getInvitations() {
                 dispatch({type: LOGOUT})
             }
             console.log('Ошибка при поиске: ', e)
+        }
+    }
+}
+
+export function respondInvitation(groupId, accepted) {
+    return async dispatch => {
+        try {
+            const responseData = await respondInvitationAPI(groupId, accepted)
+            const {groups, invitations} = responseData.data
+            if (groups) {
+                dispatch({
+                    type: UPDATE_GROUPS,
+                    groups
+                })
+            }
+            dispatch({
+                type: UPDATE_INVITATIONS,
+                invitations
+            })
+        } catch (e) {
+            const logout = checkAuthFailed(e)
+            if (logout) {
+                dispatch({type: LOGOUT})
+            }
+            console.log('Ошибка при запросе: ', e)
         }
     }
 }

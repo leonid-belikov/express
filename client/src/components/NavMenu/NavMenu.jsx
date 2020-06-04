@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {NavLink, withRouter} from "react-router-dom";
 import {connect} from 'react-redux';
 
-import {Pane, Button, Paragraph} from "evergreen-ui";
+import {Pane, Button, IconButton, Paragraph, Avatar} from "evergreen-ui";
 
 import './NavMenu.css';
 import {logout} from "../../redux/actions/userActions";
@@ -46,12 +46,23 @@ class NavMenu extends Component {
                     flexDirection='column'
                     padding={10}
                     paddingBottom={20}>
-                    <Paragraph>{this.props.user.name}</Paragraph>
-                    <Button
-                        iconAfter="log-out"
-                        onClick={this.handleClickQuitBtn.bind(this)}>
-                        Выйти
-                    </Button>
+                    <Avatar
+                        isSolid
+                        name={this.props.user.name}
+                        size={60}
+                    />
+                    <Pane
+                        display='flex'
+                        alignItems='center'
+                        marginTop={10}>
+                        <Paragraph
+                            marginRight={10}>
+                            {this.props.user.name}
+                        </Paragraph>
+                        <IconButton
+                            icon="log-out"
+                            onClick={this.handleClickQuitBtn.bind(this)}/>
+                    </Pane>
                 </Pane>
                 {this.state.links.map(link => (
                     <Button key={link.title} width='100%' appearance='minimal' display='flex' paddingX={0}>

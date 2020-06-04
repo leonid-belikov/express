@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Card, Pane, Heading, Paragraph, defaultTheme, Icon, Avatar} from 'evergreen-ui'
-import {ReactRough, Line} from "react-rough";
+import ReactRough, {Line} from "react-rough";
 
 class GroupCard extends Component {
 
@@ -38,33 +38,6 @@ class GroupCard extends Component {
                     textOverflow='ellipsis'>
                     {data.description}
                 </Paragraph>
-                <Pane
-                    position='absolute'
-                    bottom={-8}
-                    left={0}>
-                    <ReactRough
-                        width={350}
-                        height={20}>
-                        <Line
-                            x1={0}
-                            x2={350}
-                            y1={15}
-                            y2={15}
-                            stroke='white'
-                            // stroke={defaultTheme.palette.blue.dark}
-                            roughness={3}
-                        />
-                        <Line
-                            x1={0}
-                            x2={350}
-                            y1={10}
-                            y2={10}
-                            stroke='white'
-                            // stroke={defaultTheme.palette.blue.dark}
-                            roughness={3}
-                        />
-                    </ReactRough>
-                </Pane>
             </Pane>
             <Pane
                 paddingTop={25}
@@ -76,7 +49,8 @@ class GroupCard extends Component {
                     paddingBottom={25}
                     marginBottom={30}>
                     <Pane
-                        flexGrow={1}>
+                        flexGrow={1}
+                        marginRight={20}>
                         <Pane
                             display='flex'
                             paddingTop={1}
@@ -98,6 +72,7 @@ class GroupCard extends Component {
                                 key={user._id}
                                 name={user.name}
                                 size={40}
+                                marginRight={6}
                             />
                         })}
                     </Pane>
