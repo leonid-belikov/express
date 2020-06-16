@@ -75,8 +75,17 @@ class AddDialog extends Component {
             invited: this.props.newGroupData.invited,
         }
         try {
-            await createGroup(data);
-            this.props.closeHandler(true);
+            const result = await createGroup(data);
+            if (result.success) {
+                toaster.success(result.message)
+                this.setState({
+                    ...this.state,
+                    groupName: '',
+                })
+                this.props.closeHandler(true);
+            } else {
+                toaster.danger(result.message, {id: 'createGroupError'})
+            }
         } catch (e) {
             console.log('Ошибка в обработчике handleConfirmBtnClick', e)
         }
