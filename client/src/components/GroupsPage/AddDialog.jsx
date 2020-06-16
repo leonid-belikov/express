@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 
-import {Dialog, Tablist, Tab, Pane, Heading, TextInput, defaultTheme, Icon} from "evergreen-ui";
+import {Dialog, Tablist, Tab, Pane, Heading, TextInput, defaultTheme, Icon, toaster} from "evergreen-ui";
 import AddFormDescription from "./AddFormDescription";
 import AddFormAccounts from "./AddFormAccounts";
 import AddFormInvitations from "./AddFormInvitations";
@@ -61,6 +61,13 @@ class AddDialog extends Component {
     }
 
     async handleConfirmBtnClick() {
+        if (!this.state.groupName) {
+            toaster.notify('Необходимо указать название группы', {id: 'groupNameWarning'})
+            return
+        } else if (!this.props.newGroupData.accounts.length) {
+            toaster.notify('Необходимо создать хотя бы один счет', {id: 'accountsWarning'})
+            return
+        }
         const data = {
             name: this.state.groupName,
             description: this.props.newGroupData.description,
