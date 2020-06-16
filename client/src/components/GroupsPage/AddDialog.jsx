@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 
-import {Dialog, Tablist, Tab, Pane, Heading, TextInput, defaultTheme, Icon} from "evergreen-ui";
+import {Dialog, Tablist, Tab, Pane, Heading, TextInput, defaultTheme, Icon, toaster} from "evergreen-ui";
 import AddFormDescription from "./AddFormDescription";
 import AddFormAccounts from "./AddFormAccounts";
 import AddFormInvitations from "./AddFormInvitations";
@@ -61,6 +61,13 @@ class AddDialog extends Component {
     }
 
     async handleConfirmBtnClick() {
+        if (!this.state.groupName) {
+            toaster.notify('Необходимо указать название группы', {id: 'groupNameWarning'})
+            return
+        } else if (!this.props.newGroupData.accounts.length) {
+            toaster.notify('Необходимо создать хотя бы один счет', {id: 'accountsWarning'})
+            return
+        }
         const data = {
             name: this.state.groupName,
             description: this.props.newGroupData.description,
@@ -68,8 +75,17 @@ class AddDialog extends Component {
             invited: this.props.newGroupData.invited,
         }
         try {
-            await createGroup(data);
-            this.props.closeHandler(true);
+            const result = await createGroup(data);
+            if (result.success) {
+                toaster.success(result.message)
+                this.setState({
+                    ...this.state,
+                    groupName: '',
+                })
+                this.props.closeHandler(true);
+            } else {
+                toaster.danger(result.message, {id: 'createGroupError'})
+            }
         } catch (e) {
             console.log('Ошибка в обработчике handleConfirmBtnClick', e)
         }

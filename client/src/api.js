@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {toaster} from "evergreen-ui";
 
 const wrapHttp = () => {
     const _axios = axios.create({
@@ -115,9 +116,22 @@ export async function createGroup(data) {
     }
     try {
         const responseData = await wrapHttp().post('/api/group/add', formattedData);
-        console.log(responseData);
+        return {
+            success: true,
+            message: `Группа "${responseData.data.name}" успешно создана`,
+        }
     } catch (e) {
+        if (e.response?.status === 422) {
+            return {
+                success: false,
+                message: e.response.data.message,
+            }
+        }
         console.log('Ошибка при создании группы:', e)
+        return {
+            success: false,
+            message: 'При создании группы произошла ошибка',
+        }
     }
 }
 

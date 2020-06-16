@@ -35,6 +35,23 @@ router.post('/add', auth, async (req, res) => {
     try {
         const {name, description, invited, accounts} = req.body;
         const userId = req.userId;
+        const candidate = await Group.findOne(
+            {
+                $and: [
+                    {name},
+                    {
+                        $or: [
+                            {users: { $elemMatch: { $eq: userId } } },
+                            {invited: { $elemMatch: { $eq: userId } } },
+                        ]
+                    }
+                ]
+            }
+        )
+        if (candidate) {
+            console.log('>>>', candidate)
+            return res.status(422).json({message: 'Выбранное имя группы уже занято'})
+        }
         const users = [userId]
         const group = new Group({
             name,
