@@ -69,7 +69,7 @@ router.post('/register',
                 status: 'success',
                 token,
                 user: {
-                    name
+                    name,
                 }
             });
 
@@ -116,11 +116,17 @@ router.post('/login',
                 {expiresIn: '1h'}
             )
 
+            console.log({
+                name,
+                homeGroup: user.homeGroup,
+            })
+
             res.json({
                 status: 'success',
                 token,
                 user: {
-                    name
+                    name,
+                    homeGroup: user.homeGroup,
                 }
             })
 

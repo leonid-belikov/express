@@ -1,8 +1,8 @@
 const {Router} = require('express');
 const Group = require('../models/Group');
+const User = require('../models/User');
 const auth = require('../middleware/auth.middleware')
 const router = new Router();
-const {Schema} = require('mongoose');
 
 
 const findGroupsByUser = async userId => await Group.find({
@@ -49,7 +49,6 @@ router.post('/add', auth, async (req, res) => {
             }
         )
         if (candidate) {
-            console.log('>>>', candidate)
             return res.status(422).json({message: 'Выбранное имя группы уже занято'})
         }
         const users = [userId]
@@ -60,7 +59,18 @@ router.post('/add', auth, async (req, res) => {
             invited,
             accounts,
         });
-        await group.save();
+        await group.save()
+
+        // Если у юзера нет домашней группы, то присвоим
+        const userModel = await User.findOne({_id: userId})
+        const userHomeGroup = userModel.homeGroup
+        if (!userHomeGroup) {
+            const group = await Group.findOne({name})
+            await User.findOneAndUpdate(
+                {_id: userId},
+                {$set: {homeGroup: group._id}}
+            )
+        }
         res.send(group)
     } catch (e) {
         res.status(500).json({message: 'Что-то пошло не так...'})
