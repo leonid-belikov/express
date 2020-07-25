@@ -69,7 +69,7 @@ router.post('/register',
                 status: 'success',
                 token,
                 user: {
-                    name
+                    name,
                 }
             });
 
@@ -98,6 +98,7 @@ router.post('/login',
 
             const {name, password} = req.body;
             const user = await User.findOne({name})
+                .populate('homeGroup', 'name')
 
             if (!user) {
                 return res.status(400).json({message: 'Пользователь не найден'})
@@ -120,7 +121,8 @@ router.post('/login',
                 status: 'success',
                 token,
                 user: {
-                    name
+                    name,
+                    homeGroup: user.homeGroup,
                 }
             })
 

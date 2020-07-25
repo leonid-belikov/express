@@ -30,6 +30,7 @@ class App extends Component {
                         width={'100%'}
                         elevation={4}
                         backgroundColor="white"
+                        marginLeft={160}
                         padding={25}>
                         <Switch>
                             <Route exact path="/" component={MainPage}/>

@@ -160,7 +160,7 @@ class GroupsPage extends Component {
                     display='flex'
                     flexWrap='wrap'
                     marginTop={20}
-                    marginBottom={82}
+                    marginBottom={32}
                     paddingTop={10}>
                     {this.getContentGroups()}
                 </Pane>}

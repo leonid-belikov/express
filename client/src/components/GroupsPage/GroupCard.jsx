@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {Card, Pane, Heading, Paragraph, defaultTheme, Icon, Avatar} from 'evergreen-ui'
 import ReactRough, {Line} from "react-rough";
 
+import './GroupCard.css'
+
 class GroupCard extends Component {
 
     render() {
@@ -14,19 +16,20 @@ class GroupCard extends Component {
             elevation={3}
             width={350}
             borderRadius={cardBorderRadius}
-            marginRight={25}
-            marginTop={25}>
+            marginRight={35}
+            marginBottom={75}>
             <Pane
+                className='group-card__header'
                 position='relative'
                 paddingTop={24}
                 paddingBottom={16}
                 paddingX={25}
-                background={defaultTheme.palette.neutral.dark}
+                background={defaultTheme.palette.blue.light}
                 borderTopRightRadius={cardBorderRadius}
                 borderTopLeftRadius={cardBorderRadius}>
                 <Heading
                     size={600}
-                    color='white'
+                    color={defaultTheme.scales.neutral.N8}
                     marginBottom={10}>
                     {data.name}
                 </Heading>

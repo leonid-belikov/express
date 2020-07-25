@@ -1,8 +1,8 @@
 const {Router} = require('express');
 const Group = require('../models/Group');
+const User = require('../models/User');
 const auth = require('../middleware/auth.middleware')
 const router = new Router();
-const {Schema} = require('mongoose');
 
 
 const findGroupsByUser = async userId => await Group.find({
@@ -16,6 +16,26 @@ const findInvitationsByUser = async userId => await Group.find({
     invited: { $elemMatch: { $eq: userId } }
 })
     .populate('users', 'name')
+
+
+const checkHomeGroup = async (userId, groupInfo) => {
+    const userModel = await User.findOne({_id: userId})
+    const userHomeGroup = userModel.homeGroup
+    if (!userHomeGroup) {
+        let findOptions
+        const {_id, name} = groupInfo
+        if (_id) {
+            findOptions = {_id}
+        } else if (name) {
+            findOptions = {name}
+        } else return
+        const group = await Group.findOne(findOptions)
+        await User.findOneAndUpdate(
+            {_id: userId},
+            {$set: {homeGroup: group._id}}
+        )
+    }
+}
 
 
 router.get('/show', auth, async (req, res) => {
@@ -49,7 +69,6 @@ router.post('/add', auth, async (req, res) => {
             }
         )
         if (candidate) {
-            console.log('>>>', candidate)
             return res.status(422).json({message: 'Выбранное имя группы уже занято'})
         }
         const users = [userId]
@@ -60,7 +79,11 @@ router.post('/add', auth, async (req, res) => {
             invited,
             accounts,
         });
-        await group.save();
+        await group.save()
+
+        // Если у юзера нет домашней группы, то присвоим
+        await checkHomeGroup(userId, {name})
+
         res.send(group)
     } catch (e) {
         res.status(500).json({message: 'Что-то пошло не так...'})
@@ -102,6 +125,9 @@ router.post('/invitations', auth, async (req, res) => {
         let groups = null
         if (accepted) {
             groups = await findGroupsByUser(userId)
+
+            // Если у юзера нет домашней группы, то присвоим
+            await checkHomeGroup(userId, {_id: groupId})
         }
         return res.json({
             groups,

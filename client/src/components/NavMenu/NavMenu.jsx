@@ -38,6 +38,7 @@ class NavMenu extends Component {
 
         return (
             <Pane
+                position='fixed'
                 minWidth={150}
                 paddingRight={24}>
                 <Pane

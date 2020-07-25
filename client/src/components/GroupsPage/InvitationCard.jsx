@@ -46,7 +46,7 @@ function InvitationCard(props) {
                     paddingTop={24}
                     paddingBottom={16}
                     paddingX={25}
-                    background={defaultTheme.palette.neutral.dark}
+                    background={defaultTheme.palette.blue.light}
                     borderTopRightRadius={cardBorderRadius}
                     borderTopLeftRadius={cardBorderRadius}
                     whiteSpace='nowrap'
@@ -54,7 +54,7 @@ function InvitationCard(props) {
                     textOverflow='ellipsis'>
                     <Heading
                         size={600}
-                        color='white'
+                        color={defaultTheme.scales.neutral.N8}
                         marginBottom={10}>
                         {data.name}
                     </Heading>
